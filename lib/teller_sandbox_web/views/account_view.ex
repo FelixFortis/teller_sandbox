@@ -11,6 +11,16 @@ defmodule TellerSandboxWeb.AccountView do
   end
 
   def render("account.json", %{account: account}) do
-    %{id: account.id}
+    %{
+      id: account.id,
+      account_number: account.account_number,
+      balances: account.balances,
+      currency_code: account.currency_code,
+      enrollment_id: account.enrollment_id,
+      institution: account.institution,
+      links: account.links,
+      name: account.name,
+      routing_numbers: account.routing_numbers
+    }
   end
 end
