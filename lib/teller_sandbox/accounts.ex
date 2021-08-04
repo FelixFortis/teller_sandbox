@@ -2,6 +2,7 @@ defmodule TellerSandbox.Accounts do
   @moduledoc """
   The Accounts context.
   """
+  alias TellerSandbox.DataGenerator
 
   @doc """
   Returns the list of accounts.
@@ -12,8 +13,8 @@ defmodule TellerSandbox.Accounts do
       [%Account{}, ...]
 
   """
-  def list_accounts do
-    generate_accounts
+  def list_accounts(token) do
+    DataGenerator.generate_accounts(token)
   end
 
   @doc """
@@ -28,23 +29,4 @@ defmodule TellerSandbox.Accounts do
 
   """
   def get_account!(id), do: raise("TODO")
-
-  def generate_accounts do
-    [
-      %{
-        account_number: 367,
-        balances: %{available: "1256.31", ledger: "1256.31"},
-        currency_code: "USD",
-        enrollment_id: "test_enr_1xyG_97e",
-        institution: %{id: "teller_bank", name: "The Teller Bank"},
-        links: %{
-          self: "http://localhost/accounts/test_acc_E6kuc45U",
-          transactions: "http://localhost/accounts/test_acc_E6kuc45U/transactions"
-        },
-        name: "Test Checking Account",
-        routing_numbers: %{ach: "864952590", wire: "124952590"},
-        id: "test_acc_E6kuc45U"
-      }
-    ]
-  end
 end
