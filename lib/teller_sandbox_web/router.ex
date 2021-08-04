@@ -21,7 +21,9 @@ defmodule TellerSandboxWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", TellerSandboxWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", TellerSandboxWeb do
+    pipe_through :api
+
+    resources "/accounts", AccountController, only: [:index, :show]
+  end
 end
