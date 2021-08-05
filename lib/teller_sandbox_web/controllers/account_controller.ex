@@ -6,12 +6,7 @@ defmodule TellerSandboxWeb.AccountController do
   action_fallback TellerSandboxWeb.FallbackController
 
   def index(conn, _params) do
-    token =
-      conn.req_headers
-      |> Enum.into(%{})
-      |> Map.fetch!("token")
-
-    accounts = Accounts.list_accounts(token)
+    accounts = Accounts.list_accounts(conn.assigns.token)
 
     render(conn, "index.json", accounts: accounts)
   end

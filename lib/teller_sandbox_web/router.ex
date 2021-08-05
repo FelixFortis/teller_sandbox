@@ -12,6 +12,7 @@ defmodule TellerSandboxWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug TellerSandbox.Plug.AuthenticateRequest
   end
 
   scope "/", TellerSandboxWeb do
