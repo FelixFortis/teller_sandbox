@@ -4,29 +4,23 @@ defmodule TellerSandbox.AccountsTest do
   alias TellerSandbox.Accounts
 
   describe "accounts" do
-    alias TellerSandbox.Accounts.Account
-
-    @valid_attrs %{}
-    @update_attrs %{}
-    @invalid_attrs %{}
-
-    def account_fixture(attrs \\ %{}) do
-      {:ok, account} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Accounts.create_account()
-
-      account
-    end
-
     test "list_accounts/1 returns all accounts" do
-      account = account_fixture()
-      assert Accounts.list_accounts() == [account]
-    end
-
-    test "get_account!/1 returns the account with given id" do
-      account = account_fixture()
-      assert Accounts.get_account!(account.account_number) == account
+      assert Accounts.list_accounts("test_123456") == [
+               %{
+                 account_number: 367,
+                 balances: %{available: "1256.31", ledger: "1256.31"},
+                 currency_code: "USD",
+                 enrollment_id: "test_enr_1xyG_97e",
+                 id: "test_acc_E6kuc45U",
+                 institution: %{id: "teller_bank", name: "The Teller Bank"},
+                 links: %{
+                   self: "http://localhost/accounts/test_acc_E6kuc45U",
+                   transactions: "http://localhost/accounts/test_acc_E6kuc45U/transactions"
+                 },
+                 name: "Test Checking Account",
+                 routing_numbers: %{ach: "864952590", wire: "124952590"}
+               }
+             ]
     end
   end
 end
