@@ -1,5 +1,6 @@
 defmodule TellerSandbox.Plug.AuthenticateRequest do
   import Plug.Conn
+  import Phoenix.Controller
 
   alias TellerSandbox.AuthToken
 
@@ -14,7 +15,8 @@ defmodule TellerSandbox.Plug.AuthenticateRequest do
       {:error, _error} ->
         conn
         |> put_status(:unauthorized)
-        |> Phoenix.Controller.render(TellerSandboxWeb.ErrorView, "401.json")
+        |> put_view(TellerSandboxWeb.ErrorView)
+        |> render("401.json")
         |> halt
     end
   end
