@@ -36,9 +36,6 @@ defmodule TellerSandbox.DataGenerator do
 
   defp token_as_integer(token) do
     token
-    |> String.to_charlist()
-    |> IO.inspect(charlists: :as_list)
-    |> Enum.join("")
-    |> String.to_integer()
+    |> :erlang.phash2()
   end
 end
