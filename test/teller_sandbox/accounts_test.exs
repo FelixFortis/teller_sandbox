@@ -19,7 +19,7 @@ defmodule TellerSandbox.AccountsTest do
       account
     end
 
-    test "list_accounts/0 returns all accounts" do
+    test "list_accounts/1 returns all accounts" do
       account = account_fixture()
       assert Accounts.list_accounts() == [account]
     end
