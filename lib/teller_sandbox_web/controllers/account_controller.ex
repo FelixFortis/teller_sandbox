@@ -13,6 +13,16 @@ defmodule TellerSandboxWeb.AccountController do
 
   def show(conn, %{"id" => id}) do
     account = Accounts.get_account!(id, conn.assigns.token)
-    render(conn, "show.json", account: account)
+
+    cond do
+      is_nil(account) ->
+        conn
+        |> put_status(:not_found)
+        |> put_view(TellerSandboxWeb.ErrorView)
+        |> render(:"404")
+
+      is_map(account) ->
+        render(conn, "show.json", account: account)
+    end
   end
 end
