@@ -32,8 +32,8 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
       enrollment_id: random_id(length: 15),
       institution: random_institution(),
       links: %{
-        self: "http://localhost/accounts/#{id}",
-        transactions: "http://localhost/accounts/#{id}/transactions"
+        self: "http://localhost:4000/accounts/#{id}",
+        transactions: "http://localhost:4000/accounts/#{id}/transactions"
       },
       name: "Test Checking Account",
       routing_numbers: %{

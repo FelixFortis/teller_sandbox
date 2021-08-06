@@ -3,8 +3,8 @@ defmodule TellerSandbox.AccountsTest do
 
   alias TellerSandbox.Accounts
 
-  describe "accounts" do
-    test "list_accounts/1 returns all accounts" do
+  describe "list_accounts/1 " do
+    test "it returns all accounts" do
       assert Accounts.list_accounts("test_1234567") == [
                %{
                  account_number: 367,
@@ -14,8 +14,9 @@ defmodule TellerSandbox.AccountsTest do
                  id: "test_W56xjgDUFBFqjKZ",
                  institution: %{id: "wells_fargo", name: "Wells Fargo"},
                  links: %{
-                   self: "http://localhost/accounts/test_W56xjgDUFBFqjKZ",
-                   transactions: "http://localhost/accounts/test_W56xjgDUFBFqjKZ/transactions"
+                   self: "http://localhost:4000/accounts/test_W56xjgDUFBFqjKZ",
+                   transactions:
+                     "http://localhost:4000/accounts/test_W56xjgDUFBFqjKZ/transactions"
                  },
                  name: "Test Checking Account",
                  routing_numbers: %{ach: "615933022", wire: "469420120"}
@@ -28,8 +29,9 @@ defmodule TellerSandbox.AccountsTest do
                  id: "test_rdt7AusLY2CTPG_",
                  institution: %{id: "capital_one", name: "Capital One"},
                  links: %{
-                   self: "http://localhost/accounts/test_rdt7AusLY2CTPG_",
-                   transactions: "http://localhost/accounts/test_rdt7AusLY2CTPG_/transactions"
+                   self: "http://localhost:4000/accounts/test_rdt7AusLY2CTPG_",
+                   transactions:
+                     "http://localhost:4000/accounts/test_rdt7AusLY2CTPG_/transactions"
                  },
                  name: "Test Checking Account",
                  routing_numbers: %{ach: "176225235", wire: "354097347"}
@@ -42,8 +44,9 @@ defmodule TellerSandbox.AccountsTest do
                  id: "test_5RCuUlRdc4-0PpB",
                  institution: %{id: "wells_fargo", name: "Wells Fargo"},
                  links: %{
-                   self: "http://localhost/accounts/test_5RCuUlRdc4-0PpB",
-                   transactions: "http://localhost/accounts/test_5RCuUlRdc4-0PpB/transactions"
+                   self: "http://localhost:4000/accounts/test_5RCuUlRdc4-0PpB",
+                   transactions:
+                     "http://localhost:4000/accounts/test_5RCuUlRdc4-0PpB/transactions"
                  },
                  name: "Test Checking Account",
                  routing_numbers: %{ach: "951594080", wire: "294937012"}
