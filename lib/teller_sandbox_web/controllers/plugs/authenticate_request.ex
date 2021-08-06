@@ -16,7 +16,7 @@ defmodule TellerSandbox.Plug.AuthenticateRequest do
         conn
         |> put_status(:unauthorized)
         |> put_view(TellerSandboxWeb.ErrorView)
-        |> render("401.json")
+        |> render(:"401")
         |> halt
     end
   end
