@@ -2,7 +2,7 @@ defmodule TellerSandbox.Accounts do
   @moduledoc """
   The Accounts context.
   """
-  alias TellerSandbox.DataGenerator
+  alias TellerSandbox.DataGeneration.DataGenerator
 
   @doc """
   Returns the list of accounts.

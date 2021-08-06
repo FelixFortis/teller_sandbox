@@ -1,4 +1,4 @@
-defmodule TellerSandbox.DataGenerator do
+defmodule TellerSandbox.DataGeneration.DataGenerator do
   @moduledoc """
   For generating pseudo-random data used in API responses.
   Uses a token to seed :rand so that the same results will come back if the same token is passed
@@ -21,7 +21,7 @@ defmodule TellerSandbox.DataGenerator do
     Enum.map(1..number_of_accounts, fn _ -> generate_account() end)
   end
 
-  def generate_account do
+  defp generate_account do
     id = random_id(length: 15)
 
     %{

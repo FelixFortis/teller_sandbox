@@ -2,7 +2,7 @@ defmodule TellerSandbox.Plug.AuthenticateRequest do
   import Plug.Conn
   import Phoenix.Controller
 
-  alias TellerSandbox.AuthToken
+  alias TellerSandbox.Authorization.AuthToken
 
   def init(_params) do
   end

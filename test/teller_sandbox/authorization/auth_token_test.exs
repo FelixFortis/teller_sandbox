@@ -1,7 +1,7 @@
-defmodule TellerSandbox.AuthTokenTest do
+defmodule TellerSandbox.Authorization.AuthTokenTest do
   use TellerSandboxWeb.ConnCase
 
-  alias TellerSandbox.AuthToken
+  alias TellerSandbox.Authorization.AuthToken
 
   describe "#validate_token" do
     setup %{conn: conn} do

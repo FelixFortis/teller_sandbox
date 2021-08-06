@@ -1,4 +1,4 @@
-defmodule TellerSandbox.AuthToken do
+defmodule TellerSandbox.Authorization.AuthToken do
   def validate_token(conn) do
     case get_token_from_header(conn) do
       {:ok, token} ->
