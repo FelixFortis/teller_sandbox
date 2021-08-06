@@ -12,7 +12,7 @@ defmodule TellerSandboxWeb.AccountController do
   end
 
   def show(conn, %{"id" => id}) do
-    account = Accounts.get_account!(id)
+    account = Accounts.get_account!(id, conn.assigns.token)
     render(conn, "show.json", account: account)
   end
 end

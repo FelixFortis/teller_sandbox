@@ -28,5 +28,14 @@ defmodule TellerSandbox.Accounts do
       %Account{}
 
   """
-  def get_account!(id), do: raise("TODO")
+  def get_account!(id, token) do
+    DataGenerator.generate_accounts(token)
+    |> find_account_by_id(id)
+  end
+
+  defp find_account_by_id(accounts, id) do
+    accounts
+    |> Enum.filter(fn account -> account[:id] == id end)
+    |> List.first()
+  end
 end
