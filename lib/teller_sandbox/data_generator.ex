@@ -3,7 +3,7 @@ defmodule TellerSandbox.DataGenerator do
   For generating pseudo-random data used in API responses.
   Uses a token to seed :rand so that the same results will come back if the same token is passed
   """
-
+  @institutions Application.get_env(:teller_sandbox, :institutions)
   @doc """
   Returns all of the random data as a list of maps.
 
@@ -16,26 +16,84 @@ defmodule TellerSandbox.DataGenerator do
   def generate_accounts(token) do
     :rand.seed(:exsplus, {100, 101, token_as_integer(token)})
 
-    [
-      %{
-        account_number: 367,
-        balances: %{available: "1256.31", ledger: "1256.31"},
-        currency_code: "USD",
-        enrollment_id: "test_enr_1xyG_97e",
-        institution: %{id: "teller_bank", name: "The Teller Bank"},
-        links: %{
-          self: "http://localhost/accounts/test_acc_E6kuc45U",
-          transactions: "http://localhost/accounts/test_acc_E6kuc45U/transactions"
-        },
-        name: "Test Checking Account",
-        routing_numbers: %{ach: "864952590", wire: "124952590"},
-        id: "test_acc_E6kuc45U"
+    number_of_accounts = Enum.random(1..3)
+
+    Enum.map(1..number_of_accounts, fn _ -> generate_account() end)
+  end
+
+  def generate_account do
+    id = random_id(length: 15)
+
+    %{
+      id: id,
+      account_number: 367,
+      balances: random_balance(),
+      currency_code: "USD",
+      enrollment_id: random_id(length: 15),
+      institution: random_institution(),
+      links: %{
+        self: "http://localhost/accounts/#{id}",
+        transactions: "http://localhost/accounts/#{id}/transactions"
+      },
+      name: "Test Checking Account",
+      routing_numbers: %{
+        ach: random_number_string(length: 9),
+        wire: random_number_string(length: 9)
       }
-    ]
+    }
   end
 
   defp token_as_integer(token) do
     token
     |> :erlang.phash2()
+  end
+
+  defp random_balance do
+    balance =
+      (:rand.uniform() * 100)
+      |> Float.ceil(10)
+      |> Float.to_string()
+      |> String.slice(0..4)
+
+    %{available: balance, ledger: balance}
+  end
+
+  defp random_id(length: length) do
+    "test_" <> random_string(length: length)
+  end
+
+  defp random_string(length: length) do
+    characters =
+      "12234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-"
+      |> String.split("", trim: true)
+
+    range = 1..length
+
+    range
+    |> Enum.reduce([], fn _, accumulator -> [Enum.random(characters) | accumulator] end)
+    |> Enum.join("")
+  end
+
+  defp random_number_string(length: length) do
+    numbers =
+      "12234567890"
+      |> String.split("", trim: true)
+
+    range = 1..length
+
+    range
+    |> Enum.reduce([], fn _, accumulator -> [Enum.random(numbers) | accumulator] end)
+    |> Enum.join("")
+  end
+
+  defp random_institution do
+    institution_name = Enum.random(@institutions)
+
+    institution_id =
+      institution_name
+      |> String.downcase()
+      |> String.replace(" ", "_")
+
+    %{id: institution_id, name: institution_name}
   end
 end
