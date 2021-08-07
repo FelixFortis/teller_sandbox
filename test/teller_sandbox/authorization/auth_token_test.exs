@@ -8,7 +8,8 @@ defmodule TellerSandbox.Authorization.AuthTokenTest do
       {:ok, conn: put_req_header(conn, "token", "test_123456")}
     end
 
-    test "returns the token if it exists and is valid" do
+    test "returns the token if it exists and is valid", %{conn: conn} do
+      assert AuthToken.validate_token(conn) == {:ok, "test_123456"}
     end
   end
 end
