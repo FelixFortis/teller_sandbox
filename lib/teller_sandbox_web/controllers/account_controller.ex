@@ -3,8 +3,6 @@ defmodule TellerSandboxWeb.AccountController do
 
   alias TellerSandbox.Accounts
 
-  action_fallback TellerSandboxWeb.FallbackController
-
   def index(conn, _params) do
     accounts = Accounts.list_accounts(conn.assigns.token)
 
