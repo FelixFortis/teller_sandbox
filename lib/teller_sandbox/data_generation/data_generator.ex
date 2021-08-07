@@ -9,10 +9,23 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
 
   ## Examples
 
-      iex> generate_accounts("test_token_123")
-      [%Account{}, ...]
+      iex> generate_accounts_and_transactions("test_token_123")
+      [%{account: %{}, transactions: [%{}, ...]}, ...]
 
   """
+  def generate_accounts_and_transactions(token) do
+    :rand.seed(:exsplus, {100, 101, token_as_integer(token)})
+
+    number_of_accounts = Enum.random(1..3)
+
+    Enum.map(1..number_of_accounts, fn _ ->
+      %{
+        account: generate_account(),
+        transactions: generate_transactions()
+      }
+    end)
+  end
+
   def generate_accounts(token) do
     :rand.seed(:exsplus, {100, 101, token_as_integer(token)})
 
@@ -41,6 +54,13 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
         wire: random_number_string(length: 9)
       }
     }
+  end
+
+  defp generate_transactions() do
+    [
+      %{id: 1, type: "card_payment"},
+      %{id: 2, type: "card_payment"}
+    ]
   end
 
   defp token_as_integer(token) do
