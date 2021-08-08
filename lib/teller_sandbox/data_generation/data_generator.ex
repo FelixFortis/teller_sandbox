@@ -4,6 +4,7 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
   Uses a token to seed :rand so that the same results will come back if the same token is passed
   """
   @institutions Application.get_env(:teller_sandbox, :institutions)
+  @merchants Application.get_env(:teller_sandbox, :merchants)
   @doc """
   Returns all of the random data as a list of maps.
 
@@ -115,5 +116,9 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
       |> String.replace(" ", "_")
 
     %{id: institution_id, name: institution_name}
+  end
+
+  defp random_merchant do
+    Enum.random(@merchants)
   end
 end

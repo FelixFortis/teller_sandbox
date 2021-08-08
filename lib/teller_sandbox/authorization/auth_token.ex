@@ -19,7 +19,7 @@ defmodule TellerSandbox.Authorization.AuthToken do
     |> Map.fetch("token")
   end
 
-  defp validate_string(token), do: String.valid?(token)
+  defp validate_string(token), do: Regex.match?(~r{\A\w+\z}, token)
 
   defp validate_slice(token), do: "test_" == String.slice(token, 0..4)
 end
