@@ -98,6 +98,14 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
     %{available: balance, ledger: balance}
   end
 
+  defp to_transaction_amount(amount) do
+    amount_as_string = Integer.to_string(amount)
+
+    Regex.split(~r{00\z}, amount_as_string, include_captures: true, trim: true)
+    |> List.insert_at(1, ".")
+    |> Enum.join("")
+  end
+
   defp random_id(length: length) do
     "test_" <> random_string(length: length)
   end
