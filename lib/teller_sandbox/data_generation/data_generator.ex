@@ -10,44 +10,48 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
 
   ## Examples
 
-      iex> generate_accounts_and_transactions("test_token_123")
+      iex> map_accounts_and_transactions("test_token_123")
       [%{account: %{}, transactions: [%{}, ...]}, ...]
 
   """
-  def generate_accounts_and_transactions(token) do
+  def map_accounts_and_transactions(token) do
     :rand.seed(:exsplus, {100, 101, token_as_integer(token)})
 
     number_of_accounts = Enum.random(1..3)
 
     Enum.map(1..number_of_accounts, fn _ ->
-      %{
-        account: generate_account(),
-        transactions: generate_transactions()
+      account_id = random_id(length: 15)
+      opening_balance = "5000.00"
+
+      transaction_amount = %{
+        account: generate_account(account_id),
+        transactions: map_transactions(account_id)
       }
     end)
   end
 
-  def generate_accounts(token) do
+  def map_accounts(token) do
     :rand.seed(:exsplus, {100, 101, token_as_integer(token)})
 
     number_of_accounts = Enum.random(1..3)
 
-    Enum.map(1..number_of_accounts, fn _ -> generate_account() end)
+    Enum.map(1..number_of_accounts, fn _ ->
+      account_id = random_id(length: 15)
+      generate_account(account_id)
+    end)
   end
 
-  defp generate_account do
-    id = random_id(length: 15)
-
+  defp generate_account(account_id) do
     %{
-      id: id,
+      id: account_id,
       account_number: 367,
       balances: random_balance(),
       currency_code: "USD",
       enrollment_id: random_id(length: 15),
       institution: random_institution(),
       links: %{
-        self: "http://localhost:4000/accounts/#{id}",
-        transactions: "http://localhost:4000/accounts/#{id}/transactions"
+        self: "http://localhost:4000/accounts/#{account_id}",
+        transactions: "http://localhost:4000/accounts/#{account_id}/transactions"
       },
       name: "Test Checking Account",
       routing_numbers: %{
@@ -57,11 +61,26 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
     }
   end
 
-  defp generate_transactions() do
-    [
-      %{id: 1, type: "card_payment"},
-      %{id: 2, type: "card_payment"}
-    ]
+  def map_transactions(account_id) do
+    Enum.map(1..2, fn _ ->
+      generate_transaction(account_id)
+    end)
+  end
+
+  defp generate_transaction(account_id) do
+    %{
+      type: "card_payment",
+      running_balance: "1250.00",
+      links: %{
+        self: "http://localhost/accounts/#{account_id}/transactions/test_txn_2f4Nf0Vz",
+        account: "http://localhost/accounts/#{account_id}"
+      },
+      id: random_id(length: 15),
+      description: random_merchant(),
+      date: "2019-11-19",
+      amount: "-6.31",
+      account_id: "#{account_id}"
+    }
   end
 
   defp token_as_integer(token) do

@@ -2,15 +2,14 @@ defmodule TellerSandboxWeb.TransactionController do
   use TellerSandboxWeb, :controller
 
   alias TellerSandbox.Transactions
-  alias TellerSandbox.Transactions.Transaction
 
-  def index(conn, _params) do
-    transactions = Transactions.list_transactions()
+  def index(conn, %{"account_id" => account_id}) do
+    transactions = Transactions.list_transactions(conn.assigns.token, account_id)
     render(conn, "index.json", transactions: transactions)
   end
 
-  def show(conn, %{"id" => id}) do
-    transaction = Transactions.get_transaction!(id)
+  def show(conn, %{"account_id" => account_id, "id" => id}) do
+    transaction = Transactions.get_transaction!(conn.assigns.token, account_id, id)
     render(conn, "show.json", transaction: transaction)
   end
 end

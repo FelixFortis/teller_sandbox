@@ -3,9 +3,9 @@ defmodule TellerSandbox.DataGeneration.DataGeneratorTest do
 
   alias TellerSandbox.DataGeneration.DataGenerator
 
-  describe "#generate_accounts/1" do
+  describe "#map_accounts/1" do
     test "returns a pseudorandom collection of accounts" do
-      assert DataGenerator.generate_accounts("test_1234567") == [
+      assert DataGenerator.map_accounts("test_1234567") == [
                %{
                  account_number: 367,
                  balances: %{available: "93.60", ledger: "93.60"},
@@ -55,9 +55,9 @@ defmodule TellerSandbox.DataGeneration.DataGeneratorTest do
     end
   end
 
-  describe "#generate_accounts_and_transactions/1" do
+  describe "#map_accounts_and_transactions/1" do
     test "returns a pseudorandom collection of accounts and transactions" do
-      assert DataGenerator.generate_accounts_and_transactions("test_123456") == [
+      assert DataGenerator.map_accounts_and_transactions("test_123456") == [
                %{
                  account: %{
                    account_number: 367,

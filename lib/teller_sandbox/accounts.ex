@@ -14,7 +14,7 @@ defmodule TellerSandbox.Accounts do
 
   """
   def list_accounts(token) do
-    DataGenerator.generate_accounts(token)
+    DataGenerator.map_accounts(token)
   end
 
   @doc """
@@ -29,7 +29,7 @@ defmodule TellerSandbox.Accounts do
 
   """
   def get_account!(id, token) do
-    DataGenerator.generate_accounts(token)
+    DataGenerator.map_accounts(token)
     |> find_account_by_id(id)
   end
 
