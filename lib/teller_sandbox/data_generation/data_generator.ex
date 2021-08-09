@@ -21,11 +21,15 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
 
     Enum.map(1..number_of_accounts, fn _ ->
       account_id = random_id(length: 15)
-      opening_balance = "5000.00"
 
-      transaction_amount = %{
+      %{
         account: generate_account(account_id),
-        transactions: map_transactions(account_id)
+        transactions:
+          generate_transactions(90, [],
+            account_id: account_id,
+            running_balance: "5000.00",
+            running_date: ~D[2021-01-01]
+          )
       }
     end)
   end
@@ -37,6 +41,7 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
 
     Enum.map(1..number_of_accounts, fn _ ->
       account_id = random_id(length: 15)
+
       generate_account(account_id)
     end)
   end
@@ -45,7 +50,10 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
     %{
       id: account_id,
       account_number: 367,
-      balances: random_balance(),
+      balances: %{
+        available: "5000.00",
+        ledger: "5000.00"
+      },
       currency_code: "USD",
       enrollment_id: random_id(length: 15),
       institution: random_institution(),
@@ -61,49 +69,73 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
     }
   end
 
-  def map_transactions(account_id) do
-    Enum.map(1..2, fn _ ->
-      generate_transaction(account_id)
-    end)
+  @spec generate_transactions(any, any, any) :: any
+  def generate_transactions(n, transactions, opts \\ [])
+
+  def generate_transactions(n, transactions, opts)
+      when n > 0 do
+    transaction_id = random_id(length: 15)
+    transaction_amount = random_transaction_amount()
+
+    transaction = %{
+      type: "card_payment",
+      running_balance: opts[:running_balance],
+      links: %{
+        self: "http://localhost/accounts/#{opts[:account_id]}/transactions/#{transaction_id}",
+        account: "http://localhost/accounts/#{opts[:account_id]}"
+      },
+      id: transaction_id,
+      description: random_merchant(),
+      date: Date.to_iso8601(opts[:running_date]),
+      amount: "-" <> transaction_amount,
+      account_id: "#{opts[:account_id]}"
+    }
+
+    new_balance = calculate_new_balance(opts[:running_balance], transaction_amount)
+    new_date = Date.add(opts[:running_date], -1)
+
+    generate_transactions(n - 1, [transaction | transactions],
+      account_id: opts[:account_id],
+      running_balance: new_balance,
+      running_date: new_date
+    )
   end
 
-  defp generate_transaction(account_id) do
-    %{
-      type: "card_payment",
-      running_balance: "1250.00",
-      links: %{
-        self: "http://localhost/accounts/#{account_id}/transactions/test_txn_2f4Nf0Vz",
-        account: "http://localhost/accounts/#{account_id}"
-      },
-      id: random_id(length: 15),
-      description: random_merchant(),
-      date: "2019-11-19",
-      amount: "-6.31",
-      account_id: "#{account_id}"
-    }
-  end
+  def generate_transactions(_n, transactions, _opts), do: transactions |> Enum.reverse()
 
   defp token_as_integer(token) do
     token
     |> :erlang.phash2()
   end
 
-  defp random_balance do
-    balance =
-      (:rand.uniform() * 100)
-      |> Float.ceil(10)
-      |> Float.to_string()
-      |> String.slice(0..4)
-
-    %{available: balance, ledger: balance}
+  defp random_transaction_amount do
+    (:rand.uniform() * 10)
+    |> Float.ceil(10)
+    |> Float.to_string()
+    |> String.slice(0..3)
   end
 
-  defp to_transaction_amount(amount) do
+  def calculate_new_balance(balance, transaction_amount) do
+    txn_amount = transaction_amount_to_integer(transaction_amount)
+    current_balance = transaction_amount_to_integer(balance)
+
+    (current_balance + txn_amount)
+    |> integer_to_transaction_amount()
+  end
+
+  defp integer_to_transaction_amount(amount) do
     amount_as_string = Integer.to_string(amount)
 
-    Regex.split(~r{00\z}, amount_as_string, include_captures: true, trim: true)
+    Regex.split(~r{\d\d\z}, amount_as_string, include_captures: true, trim: true)
     |> List.insert_at(1, ".")
     |> Enum.join("")
+  end
+
+  defp transaction_amount_to_integer(amount) do
+    amount
+    |> String.split(".", trim: true)
+    |> Enum.join("")
+    |> String.to_integer()
   end
 
   defp random_id(length: length) do
@@ -112,7 +144,7 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
 
   defp random_string(length: length) do
     characters =
-      "12234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-"
+      "12234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
       |> String.split("", trim: true)
 
     range = 1..length

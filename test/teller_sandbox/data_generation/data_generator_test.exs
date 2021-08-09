@@ -8,48 +8,48 @@ defmodule TellerSandbox.DataGeneration.DataGeneratorTest do
       assert DataGenerator.map_accounts("test_1234567") == [
                %{
                  account_number: 367,
-                 balances: %{available: "93.60", ledger: "93.60"},
+                 balances: %{available: "5000.00", ledger: "5000.00"},
                  currency_code: "USD",
-                 enrollment_id: "test_-7YND7I9QZGpt2f",
-                 id: "test_W56xjgDUFBFqjKZ",
-                 institution: %{id: "wells_fargo", name: "Wells Fargo"},
-                 links: %{
-                   self: "http://localhost:4000/accounts/test_W56xjgDUFBFqjKZ",
-                   transactions:
-                     "http://localhost:4000/accounts/test_W56xjgDUFBFqjKZ/transactions"
-                 },
-                 name: "Test Checking Account",
-                 routing_numbers: %{ach: "615933022", wire: "469420120"}
-               },
-               %{
-                 account_number: 367,
-                 balances: %{available: "80.11", ledger: "80.11"},
-                 currency_code: "USD",
-                 enrollment_id: "test_J20MZ2pjKyd_bTJ",
-                 id: "test_rdt7AusLY2CTPG_",
+                 enrollment_id: "test_UxzZf53obP68ZUX",
+                 id: "test_s7alqokw0VKdblk",
                  institution: %{id: "capital_one", name: "Capital One"},
                  links: %{
-                   self: "http://localhost:4000/accounts/test_rdt7AusLY2CTPG_",
+                   self: "http://localhost:4000/accounts/test_s7alqokw0VKdblk",
                    transactions:
-                     "http://localhost:4000/accounts/test_rdt7AusLY2CTPG_/transactions"
+                     "http://localhost:4000/accounts/test_s7alqokw0VKdblk/transactions"
                  },
                  name: "Test Checking Account",
-                 routing_numbers: %{ach: "176225235", wire: "354097347"}
+                 routing_numbers: %{ach: "159330220", wire: "694201206"}
                },
                %{
                  account_number: 367,
-                 balances: %{available: "7.139", ledger: "7.139"},
+                 balances: %{available: "5000.00", ledger: "5000.00"},
                  currency_code: "USD",
-                 enrollment_id: "test_XZSczG6P_KslBaX",
-                 id: "test_5RCuUlRdc4-0PpB",
+                 enrollment_id: "test_IMbKy6fvRjULUM_",
+                 id: "test_j1JL22S6Lc9gcv5",
                  institution: %{id: "wells_fargo", name: "Wells Fargo"},
                  links: %{
-                   self: "http://localhost:4000/accounts/test_5RCuUlRdc4-0PpB",
+                   self: "http://localhost:4000/accounts/test_j1JL22S6Lc9gcv5",
                    transactions:
-                     "http://localhost:4000/accounts/test_5RCuUlRdc4-0PpB/transactions"
+                     "http://localhost:4000/accounts/test_j1JL22S6Lc9gcv5/transactions"
                  },
                  name: "Test Checking Account",
-                 routing_numbers: %{ach: "951594080", wire: "294937012"}
+                 routing_numbers: %{ach: "622523572", wire: "409734717"}
+               },
+               %{
+                 account_number: 367,
+                 balances: %{available: "5000.00", ledger: "5000.00"},
+                 currency_code: "USD",
+                 enrollment_id: "test_L0QQhl6Lno5MktR",
+                 id: "test_Ktj_AZwhsNpUd4l",
+                 institution: %{id: "chase", name: "Chase"},
+                 links: %{
+                   self: "http://localhost:4000/accounts/test_Ktj_AZwhsNpUd4l",
+                   transactions:
+                     "http://localhost:4000/accounts/test_Ktj_AZwhsNpUd4l/transactions"
+                 },
+                 name: "Test Checking Account",
+                 routing_numbers: %{ach: "594080912", wire: "937012951"}
                }
              ]
     end
@@ -57,36 +57,90 @@ defmodule TellerSandbox.DataGeneration.DataGeneratorTest do
 
   describe "#map_accounts_and_transactions/1" do
     test "returns a pseudorandom collection of accounts and transactions" do
-      assert DataGenerator.map_accounts_and_transactions("test_123456") == [
+      accounts_and_transactions =
+        List.first(DataGenerator.map_accounts_and_transactions("test_123456"))
+
+      assert Enum.count(accounts_and_transactions.transactions) == 90
+
+      assert List.first(accounts_and_transactions.transactions) == %{
+               account_id: "test_0YFbrC34zwYq3Jw",
+               amount: "-9.42",
+               date: "2021-01-01",
+               description: "Subway",
+               id: "test_8rAzPNUeu4Rz_3B",
+               links: %{
+                 account: "http://localhost/accounts/test_0YFbrC34zwYq3Jw",
+                 self:
+                   "http://localhost/accounts/test_0YFbrC34zwYq3Jw/transactions/test_8rAzPNUeu4Rz_3B"
+               },
+               running_balance: "5000.00",
+               type: "card_payment"
+             }
+
+      assert List.last(accounts_and_transactions.transactions) == %{
+               account_id: "test_0YFbrC34zwYq3Jw",
+               amount: "-9.74",
+               date: "2020-10-04",
+               description: "Macy's",
+               id: "test_76j9KbMFQdeVcrZ",
+               links: %{
+                 account: "http://localhost/accounts/test_0YFbrC34zwYq3Jw",
+                 self:
+                   "http://localhost/accounts/test_0YFbrC34zwYq3Jw/transactions/test_76j9KbMFQdeVcrZ"
+               },
+               running_balance: "5440.78",
+               type: "card_payment"
+             }
+    end
+  end
+
+  describe "generate_transactions/3" do
+    test "it returns a list of transactions" do
+      :rand.seed(:exsplus, {100, 101, 102})
+
+      assert DataGenerator.generate_transactions(3, [],
+               account_id: 123,
+               running_balance: "5000.00",
+               running_date: ~D[2021-01-01]
+             ) == [
                %{
-                 account: %{
-                   account_number: 367,
-                   balances: %{
-                     available: "30.00",
-                     ledger: "30.00"
-                   },
-                   currency_code: "USD",
-                   enrollment_id: "test_UFIpSkQ5wjRNdjc",
-                   id: "test_p6b8n950gtxsqjv",
-                   institution: %{
-                     id: "chase",
-                     name: "Chase"
-                   },
-                   links: %{
-                     self: "http://localhost:4000/accounts/test_p6b8n950gtxsqjv",
-                     transactions:
-                       "http://localhost:4000/accounts/test_p6b8n950gtxsqjv/transactions"
-                   },
-                   name: "Test Checking Account",
-                   routing_numbers: %{
-                     ach: "744795987",
-                     wire: "748901917"
-                   }
+                 account_id: "123",
+                 amount: "-8.68",
+                 date: "2021-01-01",
+                 description: "Caltrain",
+                 id: "test_zFy9AQjzuLXKURZ",
+                 links: %{
+                   account: "http://localhost/accounts/123",
+                   self: "http://localhost/accounts/123/transactions/test_zFy9AQjzuLXKURZ"
                  },
-                 transactions: [
-                   %{id: 1, type: "card_payment"},
-                   %{id: 2, type: "card_payment"}
-                 ]
+                 running_balance: "5000.00",
+                 type: "card_payment"
+               },
+               %{
+                 account_id: "123",
+                 amount: "-6.20",
+                 date: "2020-12-31",
+                 description: "iTunes",
+                 id: "test_rmDkfBhL__pcCWP",
+                 links: %{
+                   account: "http://localhost/accounts/123",
+                   self: "http://localhost/accounts/123/transactions/test_rmDkfBhL__pcCWP"
+                 },
+                 running_balance: "5008.68",
+                 type: "card_payment"
+               },
+               %{
+                 account_id: "123",
+                 amount: "-3.34",
+                 date: "2020-12-30",
+                 description: "Panera",
+                 id: "test_8l1LBqzwgWz4j12",
+                 links: %{
+                   account: "http://localhost/accounts/123",
+                   self: "http://localhost/accounts/123/transactions/test_8l1LBqzwgWz4j12"
+                 },
+                 running_balance: "5014.88",
+                 type: "card_payment"
                }
              ]
     end
