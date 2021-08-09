@@ -28,7 +28,7 @@ defmodule TellerSandbox.Accounts do
       %Account{}
 
   """
-  def get_account!(id, token) do
+  def get_account!(token, id) do
     DataGenerator.map_accounts(token)
     |> find_account_by_id(id)
   end

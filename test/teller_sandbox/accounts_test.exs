@@ -5,21 +5,21 @@ defmodule TellerSandbox.AccountsTest do
 
   describe "get_account!/2" do
     test "it returns an account by id" do
-      assert Accounts.get_account!("test_W56xjgDUFBFqjKZ", "test_1234567") ==
+      assert Accounts.get_account!("test_1234567", "test_Ktj_AZwhsNpUd4l") ==
                %{
                  account_number: 367,
-                 balances: %{available: "93.60", ledger: "93.60"},
+                 balances: %{available: "5000.00", ledger: "5000.00"},
                  currency_code: "USD",
-                 enrollment_id: "test_-7YND7I9QZGpt2f",
-                 id: "test_W56xjgDUFBFqjKZ",
-                 institution: %{id: "wells_fargo", name: "Wells Fargo"},
+                 enrollment_id: "test_L0QQhl6Lno5MktR",
+                 id: "test_Ktj_AZwhsNpUd4l",
+                 institution: %{id: "chase", name: "Chase"},
                  links: %{
-                   self: "http://localhost:4000/accounts/test_W56xjgDUFBFqjKZ",
+                   self: "http://localhost:4000/accounts/test_Ktj_AZwhsNpUd4l",
                    transactions:
-                     "http://localhost:4000/accounts/test_W56xjgDUFBFqjKZ/transactions"
+                     "http://localhost:4000/accounts/test_Ktj_AZwhsNpUd4l/transactions"
                  },
                  name: "Test Checking Account",
-                 routing_numbers: %{ach: "615933022", wire: "469420120"}
+                 routing_numbers: %{ach: "594080912", wire: "937012951"}
                }
     end
   end
