@@ -44,4 +44,14 @@ defmodule TellerSandboxWeb.TransactionControllerTest do
              }
     end
   end
+
+  describe "show" do
+    test "it returns the transaction by id", %{conn: conn} do
+      account_id = "test_s7alqokw0VKdblk"
+      transaction_id = "test_eVR2DJGw7K9P7cH"
+      conn = get(conn, Routes.account_transaction_path(conn, :show, account_id, transaction_id))
+
+      assert json_response(conn, 200)
+    end
+  end
 end
