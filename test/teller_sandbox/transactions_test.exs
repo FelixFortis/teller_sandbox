@@ -4,7 +4,39 @@ defmodule TellerSandbox.TransactionsTest do
   alias TellerSandbox.Transactions
 
   describe "transactions" do
-    test "list_transactions/0 returns all transactions" do
+    test "list_transactions/2 returns all transactions for an account" do
+      transactions = Transactions.list_transactions("test_123456", "test_0YFbrC34zwYq3Jw")
+
+      assert transactions |> Enum.slice(0..1) == [
+               %{
+                 account_id: "test_0YFbrC34zwYq3Jw",
+                 amount: "-9.42",
+                 date: "2021-01-01",
+                 description: "Subway",
+                 id: "test_8rAzPNUeu4Rz_3B",
+                 links: %{
+                   account: "http://localhost/accounts/test_0YFbrC34zwYq3Jw",
+                   self:
+                     "http://localhost/accounts/test_0YFbrC34zwYq3Jw/transactions/test_8rAzPNUeu4Rz_3B"
+                 },
+                 running_balance: "5000.00",
+                 type: "card_payment"
+               },
+               %{
+                 account_id: "test_0YFbrC34zwYq3Jw",
+                 amount: "-1.13",
+                 date: "2020-12-31",
+                 description: "Apple",
+                 id: "test_GExd2jZwX7D9_57",
+                 links: %{
+                   account: "http://localhost/accounts/test_0YFbrC34zwYq3Jw",
+                   self:
+                     "http://localhost/accounts/test_0YFbrC34zwYq3Jw/transactions/test_GExd2jZwX7D9_57"
+                 },
+                 running_balance: "5009.42",
+                 type: "card_payment"
+               }
+             ]
     end
 
     test "get_transaction!/1 returns the transaction with given id" do

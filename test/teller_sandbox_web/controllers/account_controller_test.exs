@@ -16,48 +16,48 @@ defmodule TellerSandboxWeb.AccountControllerTest do
       assert json_response(conn, 200)["data"] == [
                %{
                  "account_number" => 367,
-                 "balances" => %{"available" => "93.60", "ledger" => "93.60"},
+                 "balances" => %{"available" => "5000.00", "ledger" => "5000.00"},
                  "currency_code" => "USD",
-                 "enrollment_id" => "test_-7YND7I9QZGpt2f",
-                 "id" => "test_W56xjgDUFBFqjKZ",
-                 "institution" => %{"id" => "wells_fargo", "name" => "Wells Fargo"},
-                 "links" => %{
-                   "self" => "http://localhost:4000/accounts/test_W56xjgDUFBFqjKZ",
-                   "transactions" =>
-                     "http://localhost:4000/accounts/test_W56xjgDUFBFqjKZ/transactions"
-                 },
-                 "name" => "Test Checking Account",
-                 "routing_numbers" => %{"ach" => "615933022", "wire" => "469420120"}
-               },
-               %{
-                 "account_number" => 367,
-                 "balances" => %{"available" => "80.11", "ledger" => "80.11"},
-                 "currency_code" => "USD",
-                 "enrollment_id" => "test_J20MZ2pjKyd_bTJ",
-                 "id" => "test_rdt7AusLY2CTPG_",
+                 "enrollment_id" => "test_UxzZf53obP68ZUX",
+                 "id" => "test_s7alqokw0VKdblk",
                  "institution" => %{"id" => "capital_one", "name" => "Capital One"},
                  "links" => %{
-                   "self" => "http://localhost:4000/accounts/test_rdt7AusLY2CTPG_",
+                   "self" => "http://localhost:4000/accounts/test_s7alqokw0VKdblk",
                    "transactions" =>
-                     "http://localhost:4000/accounts/test_rdt7AusLY2CTPG_/transactions"
+                     "http://localhost:4000/accounts/test_s7alqokw0VKdblk/transactions"
                  },
                  "name" => "Test Checking Account",
-                 "routing_numbers" => %{"ach" => "176225235", "wire" => "354097347"}
+                 "routing_numbers" => %{"ach" => "159330220", "wire" => "694201206"}
                },
                %{
                  "account_number" => 367,
-                 "balances" => %{"available" => "7.139", "ledger" => "7.139"},
+                 "balances" => %{"available" => "5000.00", "ledger" => "5000.00"},
                  "currency_code" => "USD",
-                 "enrollment_id" => "test_XZSczG6P_KslBaX",
-                 "id" => "test_5RCuUlRdc4-0PpB",
+                 "enrollment_id" => "test_IMbKy6fvRjULUM_",
+                 "id" => "test_j1JL22S6Lc9gcv5",
                  "institution" => %{"id" => "wells_fargo", "name" => "Wells Fargo"},
                  "links" => %{
-                   "self" => "http://localhost:4000/accounts/test_5RCuUlRdc4-0PpB",
+                   "self" => "http://localhost:4000/accounts/test_j1JL22S6Lc9gcv5",
                    "transactions" =>
-                     "http://localhost:4000/accounts/test_5RCuUlRdc4-0PpB/transactions"
+                     "http://localhost:4000/accounts/test_j1JL22S6Lc9gcv5/transactions"
                  },
                  "name" => "Test Checking Account",
-                 "routing_numbers" => %{"ach" => "951594080", "wire" => "294937012"}
+                 "routing_numbers" => %{"ach" => "622523572", "wire" => "409734717"}
+               },
+               %{
+                 "account_number" => 367,
+                 "balances" => %{"available" => "5000.00", "ledger" => "5000.00"},
+                 "currency_code" => "USD",
+                 "enrollment_id" => "test_L0QQhl6Lno5MktR",
+                 "id" => "test_Ktj_AZwhsNpUd4l",
+                 "institution" => %{"id" => "chase", "name" => "Chase"},
+                 "links" => %{
+                   "self" => "http://localhost:4000/accounts/test_Ktj_AZwhsNpUd4l",
+                   "transactions" =>
+                     "http://localhost:4000/accounts/test_Ktj_AZwhsNpUd4l/transactions"
+                 },
+                 "name" => "Test Checking Account",
+                 "routing_numbers" => %{"ach" => "594080912", "wire" => "937012951"}
                }
              ]
     end
@@ -77,24 +77,24 @@ defmodule TellerSandboxWeb.AccountControllerTest do
     end
 
     test "returns the requested account", %{conn: conn} do
-      id = "test_5RCuUlRdc4-0PpB"
+      id = "test_Ktj_AZwhsNpUd4l"
       conn = get(conn, Routes.account_path(conn, :show, id))
 
       assert json_response(conn, 200)["data"] ==
                %{
                  "account_number" => 367,
-                 "balances" => %{"available" => "7.139", "ledger" => "7.139"},
+                 "balances" => %{"available" => "5000.00", "ledger" => "5000.00"},
                  "currency_code" => "USD",
-                 "enrollment_id" => "test_XZSczG6P_KslBaX",
-                 "id" => "test_5RCuUlRdc4-0PpB",
-                 "institution" => %{"id" => "wells_fargo", "name" => "Wells Fargo"},
+                 "enrollment_id" => "test_L0QQhl6Lno5MktR",
+                 "id" => "test_Ktj_AZwhsNpUd4l",
+                 "institution" => %{"id" => "chase", "name" => "Chase"},
                  "links" => %{
-                   "self" => "http://localhost:4000/accounts/test_5RCuUlRdc4-0PpB",
+                   "self" => "http://localhost:4000/accounts/test_Ktj_AZwhsNpUd4l",
                    "transactions" =>
-                     "http://localhost:4000/accounts/test_5RCuUlRdc4-0PpB/transactions"
+                     "http://localhost:4000/accounts/test_Ktj_AZwhsNpUd4l/transactions"
                  },
                  "name" => "Test Checking Account",
-                 "routing_numbers" => %{"ach" => "951594080", "wire" => "294937012"}
+                 "routing_numbers" => %{"ach" => "594080912", "wire" => "937012951"}
                }
     end
   end
