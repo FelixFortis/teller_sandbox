@@ -12,10 +12,10 @@ defmodule TellerSandboxWeb.TransactionView do
 
   def render("transaction.json", %{transaction: transaction}) do
     %{
+      id: transaction.id,
       type: "card_payment",
       running_balance: transaction.running_balance,
       links: transaction.links,
-      id: transaction.id,
       description: transaction.description,
       date: transaction.date,
       amount: transaction.amount,

@@ -10,7 +10,7 @@ defmodule TellerSandboxWeb.AccountController do
   end
 
   def show(conn, %{"id" => id}) do
-    account = Accounts.get_account!(id, conn.assigns.token)
+    account = Accounts.get_account!(conn.assigns.token, id)
 
     cond do
       is_nil(account) ->
