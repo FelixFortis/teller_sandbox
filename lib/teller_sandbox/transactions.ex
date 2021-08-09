@@ -30,7 +30,11 @@ defmodule TellerSandbox.Transactions do
       %Transaction{}
 
   """
-  def get_transaction!(token, account_id, id), do: raise("TODO")
+  def get_transaction!(token, account_id, id) do
+    DataGenerator.map_accounts_and_transactions(token)
+    |> find_transactions_by_account_id(account_id)
+    |> filter_transactions_by_id(id)
+  end
 
   defp find_transactions_by_account_id(accounts_and_transactions, account_id) do
     accounts_and_transactions
@@ -39,5 +43,11 @@ defmodule TellerSandbox.Transactions do
     end)
     |> List.first()
     |> Map.get(:transactions)
+  end
+
+  defp filter_transactions_by_id(transactions, id) do
+    transactions
+    |> Enum.filter(fn transaction -> transaction[:id] == id end)
+    |> List.first()
   end
 end
