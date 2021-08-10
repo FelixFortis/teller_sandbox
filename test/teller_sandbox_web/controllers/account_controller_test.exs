@@ -7,7 +7,7 @@ defmodule TellerSandboxWeb.AccountControllerTest do
 
   describe "index action when a valid token is present" do
     setup %{conn: conn} do
-      {:ok, conn: put_req_header(conn, "token", "test_1234567")}
+      {:ok, conn: put_req_header(conn, "authorization", "Basic dGVzdF8xMjM0NTY3Og==")}
     end
 
     test "lists all accounts", %{conn: conn} do
@@ -64,6 +64,18 @@ defmodule TellerSandboxWeb.AccountControllerTest do
   end
 
   describe "index action when an invalid token is present" do
+    setup %{conn: conn} do
+      {:ok, conn: put_req_header(conn, "authorization", "Basic dGVzdHpfMTIzNDU2Og==")}
+    end
+
+    test "401 unauthorized", %{conn: conn} do
+      conn = get(conn, Routes.account_path(conn, :index))
+
+      assert json_response(conn, 401)
+    end
+  end
+
+  describe "index action when no token is present" do
     test "401 unauthorized", %{conn: conn} do
       conn = get(conn, Routes.account_path(conn, :index))
 
@@ -73,7 +85,7 @@ defmodule TellerSandboxWeb.AccountControllerTest do
 
   describe "show action when a valid token is present and an account with the passed in id exists" do
     setup %{conn: conn} do
-      {:ok, conn: put_req_header(conn, "token", "test_1234567")}
+      {:ok, conn: put_req_header(conn, "authorization", "Basic dGVzdF8xMjM0NTY3Og==")}
     end
 
     test "returns the requested account", %{conn: conn} do
@@ -101,7 +113,7 @@ defmodule TellerSandboxWeb.AccountControllerTest do
 
   describe "show action when a valid token is present but an account with the passed in id doesn't exist" do
     setup %{conn: conn} do
-      {:ok, conn: put_req_header(conn, "token", "test_1234567")}
+      {:ok, conn: put_req_header(conn, "authorization", "Basic dGVzdF8xMjM0NTY3Og==")}
     end
 
     test "returns the requested account", %{conn: conn} do

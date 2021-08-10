@@ -1,22 +1,34 @@
 defmodule TellerSandbox.Authorization.AuthToken do
   def validate_token(conn) do
-    case get_token_from_header(conn) do
+    case get_token_from_auth(conn) do
       {:ok, token} ->
         if validate_string(token) && validate_slice(token) do
           {:ok, token}
         else
-          {:error, "Invalid token"}
+          {:error, "Authorization failed"}
         end
 
       :error ->
-        {:error, "Invalid token"}
+        {:error, "Authorization failed"}
     end
   end
 
-  defp get_token_from_header(conn) do
-    conn.req_headers
-    |> Enum.into(%{})
-    |> Map.fetch("token")
+  defp get_token_from_auth(conn) do
+    try do
+      token =
+        conn.req_headers
+        |> Enum.into(%{})
+        |> Map.fetch!("authorization")
+        |> String.replace("Basic ", "")
+        |> Base.decode64!()
+        |> String.split(":")
+        |> List.first()
+
+      {:ok, token}
+    rescue
+      RuntimeError -> :error
+      KeyError -> :error
+    end
   end
 
   defp validate_string(token), do: Regex.match?(~r{\A\w+\z}, token)

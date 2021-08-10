@@ -3,7 +3,7 @@ defmodule TellerSandboxWeb.TransactionControllerTest do
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
-    {:ok, conn: put_req_header(conn, "token", "test_1234567")}
+    {:ok, conn: put_req_header(conn, "authorization", "Basic dGVzdF8xMjM0NTY3Og==")}
   end
 
   describe "index" do
