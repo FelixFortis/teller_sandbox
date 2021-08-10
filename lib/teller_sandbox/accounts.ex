@@ -13,8 +13,8 @@ defmodule TellerSandbox.Accounts do
       [%Account{}, ...]
 
   """
-  def list_accounts(token) do
-    DataGenerator.map_accounts(token)
+  def list_accounts(auth_token) do
+    DataGenerator.map_accounts(auth_token)
   end
 
   @doc """
@@ -28,8 +28,8 @@ defmodule TellerSandbox.Accounts do
       %Account{}
 
   """
-  def get_account!(token, id) do
-    DataGenerator.map_accounts(token)
+  def get_account!(auth_token, id) do
+    DataGenerator.map_accounts(auth_token)
     |> find_account_by_id(id)
   end
 

@@ -4,13 +4,13 @@ defmodule TellerSandboxWeb.AccountController do
   alias TellerSandbox.Accounts
 
   def index(conn, _params) do
-    accounts = Accounts.list_accounts(conn.assigns.token)
+    accounts = Accounts.list_accounts(conn.assigns.auth_token)
 
     render(conn, "index.json", accounts: accounts)
   end
 
   def show(conn, %{"id" => id}) do
-    account = Accounts.get_account!(conn.assigns.token, id)
+    account = Accounts.get_account!(conn.assigns.auth_token, id)
 
     cond do
       is_nil(account) ->

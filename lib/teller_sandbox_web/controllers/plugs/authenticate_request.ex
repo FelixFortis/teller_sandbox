@@ -9,8 +9,8 @@ defmodule TellerSandbox.Plug.AuthenticateRequest do
 
   def call(conn, _params) do
     case AuthToken.validate_token(conn) do
-      {:ok, token} ->
-        assign(conn, :token, token)
+      {:ok, auth_token} ->
+        assign(conn, :auth_token, auth_token)
 
       {:error, _error} ->
         conn

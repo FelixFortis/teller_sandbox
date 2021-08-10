@@ -5,7 +5,7 @@ defmodule TellerSandboxWeb.AccountControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  describe "index action when a valid token is present" do
+  describe "index action when a valid auth_token is present" do
     setup %{conn: conn} do
       {:ok, conn: put_req_header(conn, "authorization", "Basic dGVzdF8xMjM0NTY3Og==")}
     end
@@ -63,7 +63,7 @@ defmodule TellerSandboxWeb.AccountControllerTest do
     end
   end
 
-  describe "index action when an invalid token is present" do
+  describe "index action when an invalid auth_token is present" do
     setup %{conn: conn} do
       {:ok, conn: put_req_header(conn, "authorization", "Basic dGVzdHpfMTIzNDU2Og==")}
     end
@@ -75,7 +75,7 @@ defmodule TellerSandboxWeb.AccountControllerTest do
     end
   end
 
-  describe "index action when no token is present" do
+  describe "index action when no auth_token is present" do
     test "401 unauthorized", %{conn: conn} do
       conn = get(conn, Routes.account_path(conn, :index))
 
@@ -83,7 +83,7 @@ defmodule TellerSandboxWeb.AccountControllerTest do
     end
   end
 
-  describe "show action when a valid token is present and an account with the passed in id exists" do
+  describe "show action when a valid auth_token is present and an account with the passed in id exists" do
     setup %{conn: conn} do
       {:ok, conn: put_req_header(conn, "authorization", "Basic dGVzdF8xMjM0NTY3Og==")}
     end
@@ -111,7 +111,7 @@ defmodule TellerSandboxWeb.AccountControllerTest do
     end
   end
 
-  describe "show action when a valid token is present but an account with the passed in id doesn't exist" do
+  describe "show action when a valid auth_token is present but an account with the passed in id doesn't exist" do
     setup %{conn: conn} do
       {:ok, conn: put_req_header(conn, "authorization", "Basic dGVzdF8xMjM0NTY3Og==")}
     end
@@ -124,7 +124,7 @@ defmodule TellerSandboxWeb.AccountControllerTest do
     end
   end
 
-  describe "show action when an invalid token is present" do
+  describe "show action when an invalid auth_token is present" do
     test "401 unauthorized", %{conn: conn} do
       id = "test_5RCuUlRdc4-0PpB"
       conn = get(conn, Routes.account_path(conn, :show, id))

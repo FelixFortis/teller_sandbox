@@ -1,7 +1,7 @@
 defmodule TellerSandbox.DataGeneration.DataGenerator do
   @moduledoc """
   For generating pseudo-random data used in API responses.
-  Uses a token to seed :rand so that the same results will come back if the same token is passed
+  Uses an auth_token to seed :rand so that the same results will come back if the same auth_token is passed
   """
   @institutions Application.get_env(:teller_sandbox, :institutions)
   @merchants Application.get_env(:teller_sandbox, :merchants)
@@ -14,8 +14,8 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
       [%{account: %{}, transactions: [%{}, ...]}, ...]
 
   """
-  def map_accounts_and_transactions(token) do
-    :rand.seed(:exsplus, {100, 101, token_as_integer(token)})
+  def map_accounts_and_transactions(auth_token) do
+    :rand.seed(:exsplus, {100, 101, token_as_integer(auth_token)})
 
     number_of_accounts = Enum.random(1..3)
 
@@ -34,8 +34,8 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
     end)
   end
 
-  def map_accounts(token) do
-    :rand.seed(:exsplus, {100, 101, token_as_integer(token)})
+  def map_accounts(auth_token) do
+    :rand.seed(:exsplus, {100, 101, token_as_integer(auth_token)})
 
     number_of_accounts = Enum.random(1..3)
 
@@ -103,8 +103,8 @@ defmodule TellerSandbox.DataGeneration.DataGenerator do
 
   def generate_transactions(_n, transactions, _opts), do: transactions |> Enum.reverse()
 
-  defp token_as_integer(token) do
-    token
+  defp token_as_integer(auth_token) do
+    auth_token
     |> :erlang.phash2()
   end
 

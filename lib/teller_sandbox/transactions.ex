@@ -14,8 +14,8 @@ defmodule TellerSandbox.Transactions do
       [%{}, ...]
 
   """
-  def list_transactions(token, account_id) do
-    DataGenerator.map_accounts_and_transactions(token)
+  def list_transactions(auth_token, account_id) do
+    DataGenerator.map_accounts_and_transactions(auth_token)
     |> find_transactions_by_account_id(account_id)
   end
 
@@ -26,12 +26,12 @@ defmodule TellerSandbox.Transactions do
 
   ## Examples
 
-      iex> get_transaction!(123)
-      %Transaction{}
+      iex> get_transaction!("test_token_123", 123, 456)
+      %{id: 456, ...}
 
   """
-  def get_transaction!(token, account_id, id) do
-    DataGenerator.map_accounts_and_transactions(token)
+  def get_transaction!(auth_token, account_id, id) do
+    DataGenerator.map_accounts_and_transactions(auth_token)
     |> find_transactions_by_account_id(account_id)
     |> filter_transactions_by_id(id)
   end
